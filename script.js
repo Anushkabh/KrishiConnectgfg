@@ -95,7 +95,7 @@ onAuthStateChanged(auth, (user) => {
     const uid = user.uid;
     username=user.email;
     getAllData(username);
-  console.log(uid, username);
+  console.log(uid, username, user.fname);
     // ...
   } else {
     // User is signed out
@@ -104,7 +104,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // Initialize Cloud Firestore and get a reference to the service
-
+var pNo=0;
 
 var submitform=document.getElementById("submitform");
 submitform.addEventListener('click',(e)=>{
@@ -114,39 +114,46 @@ submitform.addEventListener('click',(e)=>{
   var quantity = document.getElementById("quantity").value;
   var unit = document.getElementById("unit").value;
 
-addDoc(collection(db, username), {
+addDoc(collection(db, username ), {
     product:product,
     category:category,
     quantity:quantity,
     unit:unit
 });
+console.log(username.id);
 
 alert("product added");
 }
 )
 console.log('qwe'+username)
 var stdNo=0;
+
 var tbody= document.getElementById("tbody1");
 
-function addItem(product, category, quantity, unit){
+function addItem(product, category, quantity, unit, id){
   var trow=document.createElement('tr');
   var td1=document.createElement('td');
   var td2=document.createElement('td');
   var td3=document.createElement('td');
   var td4=document.createElement('td');
   var td5=document.createElement('td');
+  // var td6=document.createElement('td');
+//"
 
   td1.innerHTML=++stdNo;
   td2.innerHTML=product;
   td3.innerHTML=category;
   td4.innerHTML=quantity;
   td5.innerHTML=unit;
+  // td6.innerHTML="<button type='button' onClick='Deleterow(id)'>Delete</button>";
+  
 
   trow.appendChild(td1);
   trow.appendChild(td2);
   trow.appendChild(td3);
   trow.appendChild(td4);
   trow.appendChild(td5);
+  // trow.appendChild(td6);
 
  tbody.appendChild(trow);
 }
@@ -156,7 +163,7 @@ function allItem(productlist){
  tbody.innerHTML="";
  console.log("Document data:", users);
 productlist.forEach(element=>{
-   addItem(element.product,element.category, element.quantity, element.unit);
+   addItem(element.product,element.category, element.quantity, element.unit, element.id);
    console.log(element.product);
 })
 
@@ -177,7 +184,11 @@ async function getAllData(username){
         
 }
 
-         
+    window.Deleterow=(id)=>{
+      deleteDoc(doc(db, username, id));
+
+    }
+
  
 
 
